@@ -20,7 +20,7 @@ beaver.connect();
 var timerRule = new schedule.RecurrenceRule();
 
 var job = schedule.scheduleJob(timerRule, function() {
-    var msg = ".";
+    var msg = new Date();
 
     beaver.createMessage("202272875447582729", msg);
 })
