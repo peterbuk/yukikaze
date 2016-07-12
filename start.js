@@ -18,6 +18,7 @@ beaver.on("messageCreate", (msg) => {
 		console.log(msg.content);
     }
     */
+    console.log ("a message");
     if (msg.id === "105167204500123648") {
         console.log ("eter message");
         if (msg.content === "~ping") {
