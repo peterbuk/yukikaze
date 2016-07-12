@@ -38,3 +38,8 @@ if (cluster.isMaster) {
 } else {
   require('./app.js');
 }
+
+var Eris = require("eris");
+
+var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
+beaver.connect();
