@@ -5,7 +5,10 @@ var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vc
 
 
 beaver.on("ready", () => { // When the bot is ready
-    console.log("Ready!"); // Log "Ready!"
+
+    var date = new Date();
+    var msg = var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    console.log("[" + msg + "]" + " On duty!"); // Log "Ready!"
 });
 
 beaver.on("messageCreate", (msg) => {
@@ -15,13 +18,17 @@ beaver.on("messageCreate", (msg) => {
 		console.log(msg.content);
     }
     */
-
+    if (msg.id === "105167204500123648") {
+        if (msg.content === "~ping") {
+            beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
+        }
+    }
 });
 
 beaver.connect();
 
 var timerRule = new schedule.RecurrenceRule();
-timerRule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+//timerRule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
 var job = schedule.scheduleJob(timerRule, function() {
     var date = new Date();
@@ -35,4 +42,11 @@ var job = schedule.scheduleJob(timerRule, function() {
 * */
 
 var pvpTimer = new schedule.RecurrenceRule();
-pvpTimer.hour = 11, 23;
+pvpTimer.hour = 1, 13;
+pvpTimer.minute = 0;
+
+var pvp = schedule.scheduleJob(pvpTimer, function() {
+    var msg = "**PVP ALERT**\nRESETS IN ONE HOUR";
+
+    beaver.createMessage("137807564028116993", msg);
+})
