@@ -10,6 +10,7 @@ beaver.on("ready", () => { // When the bot is ready
 beaver.on("messageCreate", (msg) => {
     if(msg.content === "!ping") {
         beaver.createMessage(msg.channel.id, "Pangcake!");
+		console.log(msg.content);
     }
 });
 
