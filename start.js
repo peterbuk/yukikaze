@@ -1,4 +1,4 @@
-const cluster = require('cluster'),
+/*const cluster = require('cluster'),
       stopSignals = [
         'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
         'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
@@ -37,7 +37,7 @@ if (cluster.isMaster) {
   }
 } else {
   require('./app.js');
-}
+}*/
 
 var Eris = require("eris");
 
