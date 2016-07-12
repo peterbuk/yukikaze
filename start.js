@@ -19,7 +19,7 @@ beaver.on("messageCreate", (msg) => {
     }
     */
     if (msg.author.id === "105167204500123648") {
-        if (msg.content === "~ping") {
+        if (msg.content === "~beaver") {
             beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
         }
     }
