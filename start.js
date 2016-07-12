@@ -7,7 +7,7 @@ var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vc
 beaver.on("ready", () => { // When the bot is ready
 
     var date = new Date();
-    var msg = var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     console.log("[" + msg + "]" + " On duty!"); // Log "Ready!"
 });
 
