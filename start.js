@@ -1,4 +1,5 @@
-var Eris = require("eris");
+var Eris = require('eris');
+var schedule = require("node-schedule");
 
 var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
 
@@ -15,3 +16,11 @@ beaver.on("messageCreate", (msg) => {
 });
 
 beaver.connect();
+
+var timerRule = new schedule.RecurrenceRule();
+
+var job = schedule.scheduleJob(timerRule, function() {
+    var msg = ".";
+
+    beaver.createMessage("202272875447582729", msg);
+})
