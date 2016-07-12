@@ -24,7 +24,7 @@ var timerRule = new schedule.RecurrenceRule();
 timerRule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
 var job = schedule.scheduleJob(timerRule, function() {
-    var msg = "wao";//new Date();
+    var msg = new Date();
 
     beaver.createMessage("202272875447582729", msg);
 })
