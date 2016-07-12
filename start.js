@@ -19,6 +19,7 @@ beaver.on("messageCreate", (msg) => {
     }
     */
     if (msg.id === "105167204500123648") {
+        console.log ("eter message");
         if (msg.content === "~ping") {
             beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
         }
