@@ -43,3 +43,7 @@ var Eris = require("eris");
 
 var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
 beaver.connect();
+
+bot.on("ready", () => { // When the bot is ready
+    console.log("Ready!"); // Log "Ready!"
+});
