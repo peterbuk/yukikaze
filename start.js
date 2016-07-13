@@ -1,28 +1,28 @@
+/*
+ * YUKIKAZE KAI
+ */
+
 var Eris = require('eris');
+var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
+
+// modules
 var schedule = require("node-schedule");
+var moment = require("moment");
 
-
-global.beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
-var kancolle = require("./kancolle.js");
+// custom modules
+var kancolle = require("./kancolle.js")(beaver);
 
 beaver.on("ready", () => { // When the bot is ready
-    var date = new Date();
-    var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    console.log("[" + msg + "]" + " On duty!");
+    var date = moment().format();
+    console.log("[" + date + "]" + " On duty!");
 });
 
 
 
 beaver.connect();
 
-var timerRule = new schedule.RecurrenceRule();
-//timerRule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+kancolle.commands();
+kancolle.pvpTimer();
 
-var job = schedule.scheduleJob(timerRule, function() {
-    var date = new Date();
-    var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-    beaver.createMessage("202272875447582729", msg);
-})
 
 
