@@ -5,7 +5,7 @@
  */
 
 var schedule = require("node-schedule");
-
+var moment = require("moment");
 
 module.exports = function(beaver) {
     return {
@@ -23,19 +23,20 @@ module.exports = function(beaver) {
         
         var pvp = schedule.scheduleJob(pvpRule, function() {
             var msg = "**PVP ALERT**\nRESETS IN ONE HOUR";
-
             beaver.createMessage("137807564028116993", msg);
+            console.log("[" + moment().format() + "]" + "pvp alert sent")
         });
 
+        /*
         var timerRule = new schedule.RecurrenceRule();
         timerRule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-
         var job = schedule.scheduleJob(timerRule, function() {
             var date = new Date();
             var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
             beaver.createMessage("202272875447582729", msg);
         })
+        */
     }
 
     function commands() {
@@ -49,6 +50,8 @@ module.exports = function(beaver) {
             if (msg.author.id === "105167204500123648") {
                 if (msg.content === "~beaver") {
                     beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
+                    var logmsg = msg.author.username + " used " + msg.content;
+                    console.log("[" + moment().format() + "]" + logmsg);
                 }
             }
         });
