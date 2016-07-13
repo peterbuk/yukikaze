@@ -31,18 +31,18 @@ module.exports = function(beaver) {
 
             if (msg.channel.id in mainChannels) {
                 mainChannels[msg.channel.id].count++;
-                console.log(mainChannels[msg.channel.id].name + "-" + msg.user.username);
+                console.log("["+mainChannels[msg.channel.id].name+"]:"+ msg.author.username);
             }
             else if (msg.channel.id in otherChannels) {
                 otherChannels[msg.channel.id].count++;
-                console.log(otherChannels[msg.channel.id].name + "+" + msg.user.username);
+                console.log("["+otherChannels[msg.channel.id].name+"]::"+ msg.author.username);
             }
             else { // channel not added yet
                 otherChannels[msg.channel.id] = {
                     name: msg.channel.name,
                     count: 1
                 };
-                console.log(otherChannels[msg.channel.id].name + " created");
+                console.log(otherChannels[msg.channel.id].name + " CREATED");
             }
         });
 
