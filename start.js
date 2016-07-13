@@ -1,9 +1,9 @@
 var Eris = require('eris');
 var schedule = require("node-schedule");
-var kancolle = require("./kancolle.js");
+
 
 var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
-
+var kancolle = require("./kancolle.js");
 
 beaver.on("ready", () => { // When the bot is ready
     var date = new Date();
