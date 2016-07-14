@@ -91,7 +91,7 @@ module.exports = function(beaver, db) {
             tempMsg += dbObj.otherChannels[channel].name + ": " + dbObj.otherChannels[channel].count + "\n";
         }
 
-        var updateMsg = "```Logging started " + startTime + "\n\n"
+        var updateMsg = "```Logging started " + dbObj.startTime + "\n\n"
             + "MAIN CHANNELS\n=============\n";
 
         updateMsg += "TOTAL: " + mainTotal + "\n-------------\n" + mainMsg;
