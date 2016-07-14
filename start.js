@@ -4,6 +4,7 @@
  * Author: Eternith
  */
 
+console.log("STARTO");
 console.log(process.env.OPENSHIFT_ENV_VAR);
 
 var Eris = require('eris');
