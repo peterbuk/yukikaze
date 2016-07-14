@@ -8,10 +8,9 @@ var schedule = require("node-schedule");
 var moment = require("moment");
 
 module.exports = function(beaver) {
-    return {
-        pvpTimer: pvpTimer,
-        commands: commands
-    }
+
+    var pvpMembers = ["105167204500123648",
+        "175012017290084352"];
 
     /*
      *  PVP TIMER
@@ -53,8 +52,39 @@ module.exports = function(beaver) {
                     var logmsg = msg.author.username + " used " + msg.content;
                     console.log("[" + moment().format() + "]" + logmsg);
                 }
+
+                if (msg.content === "~waopvp") {
+                    var notify = "DO YOUR GODDAMN PVP: ";
+                    for (var i = 0; i < pvpMembers.length; i++) {
+                        var user = beaver.users.find(function(u) {return u.id === pvpMembers[i]});
+                        notify += user.mention + " ";
+                    }
+
+                    beaver.createMessage(msg.channel.id, notify);
+                }
+
+                if (msg.content.startsWith("~kc")) {
+                    var url = "http://kancolle.wikia.com/wiki/";
+                    var search = msg.content.split(' ');
+                    if (search.length > 1)
+                        beaver.createMessage(msg.channel.id, url + search[1]);
+                }
+
+                if (msg.content === "~test") {
+                    /*var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
+                    var adminrole = server.roles.find(function (r) {return r.name === "Admin"})
+                    console.log(adminrole);
+                    */
+                    console.log(msg.member.roles);
+                }
             }
+
         });
+    }
+
+    return {
+        pvpTimer: pvpTimer,
+        commands: commands
     }
 
 };
