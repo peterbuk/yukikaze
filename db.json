@@ -1,0 +1,99 @@
+{
+  "msgCounting": {
+    "mainChannels": {
+      "107915021203304448": {
+        "name": "general",
+        "count": 56
+      },
+      "112533065837862912": {
+        "name": "miscellaneous",
+        "count": 3
+      },
+      "127209816207785984": {
+        "name": "advice-serious",
+        "count": 0
+      },
+      "107926606336507904": {
+        "name": "meta",
+        "count": 0
+      },
+      "108002239905284096": {
+        "name": "games-sports",
+        "count": 2
+      },
+      "107963990071603200": {
+        "name": "anime-manga",
+        "count": 13
+      },
+      "137807564028116993": {
+        "name": "kancolle",
+        "count": 7
+      },
+      "109467169867194368": {
+        "name": "idol-heaven",
+        "count": 7
+      },
+      "110073065035026432": {
+        "name": "fanart",
+        "count": 0
+      },
+      "140191247586295808": {
+        "name": "skynet",
+        "count": 0
+      }
+    },
+    "optinChannels": {
+      "110430315029241856": {
+        "name": "nsfw",
+        "count": 0
+      },
+      "186103021191561216": {
+        "name": "delta",
+        "count": 0
+      },
+      "186097264215719936": {
+        "name": "rezero",
+        "count": 0
+      },
+      "198945955897278464": {
+        "name": "orange",
+        "count": 0
+      },
+      "198808508559261707": {
+        "name": "lovelive-sunshine",
+        "count": 0
+      },
+      "198876347404255232": {
+        "name": "shokugeki",
+        "count": 0
+      },
+      "198946068602421250": {
+        "name": "kuromukuro",
+        "count": 0
+      },
+      "201087952892329984": {
+        "name": "91days",
+        "count": 0
+      },
+      "199727601726652417": {
+        "name": "new-game",
+        "count": 0
+      },
+      "202096555866587136": {
+        "name": "danganronpa",
+        "count": 0
+      }
+    },
+    "otherChannels": {},
+    "channelFilter": [
+      "145310829590478849",
+      "180542031616147456"
+    ],
+    "startTime": "[2016-07-14T16:36:32-06:00]"
+  },
+  "etc": {
+    "adminRoleID": "107984947930771456",
+    "founderRoleID": "107920385122553856",
+    "botlogID": "145310829590478849"
+  }
+}

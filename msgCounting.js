@@ -1,68 +1,68 @@
 var moment = require("moment");
+var schedule = require("node-schedule");
 
-module.exports = function(beaver) {
+module.exports = function(beaver, db) {
 
+    var dbObj = db.msgCounting;
 
+    dbObj.startTime = "[" + moment().format() + "]";
 
-    var startTime = "[" + moment().format() + "]";
-    var adminRoleID = "107984947930771456";
-    var founderRoleID = "107920385122553856";
+    /*
+        Function: Reset Counts
+        Type: Internal
+        Reset the counts of each channel
+        TODO make this run at midnight
+     */
+    function resetCounts() {
+        for (var channel in dbObj.mainChannels) {
+            dbObj.mainChannels[channel].count = 0;
+        }
+        for (var channel in dbObj.optinChannels) {
+            dbObj.optinChannels[channel].count = 0;
+        }
+        dbObj.otherChannels = {};
+    }
 
-    // main channels object
-    var mainChannels = {
-        "107915021203304448": {name: "general", count: 0},
-        "112533065837862912": {name: "miscellaneous", count: 0},
-        "127209816207785984": {name: "advice-serious", count: 0},
-        "107926606336507904": {name: "meta", count: 0},
-        "108002239905284096": {name: "games-sports", count: 0},
-        "107963990071603200": {name: "anime-manga", count: 0},
-        "137807564028116993": {name: "kancolle", count: 0},
-        "109467169867194368": {name: "idol-heaven", count: 0},
-        "110073065035026432": {name: "fanart", count: 0},
-        "140191247586295808": {name: "skynet", count: 0}
-    };
+    /*
+        Function: Count Message
+        Type: Passive
+        Counts each message sent from every channel.
+     */
+    function count(msg) {
+        //console.log("["+msg.channel.name+"]:"+ msg.author.username);
 
-    // temp/opt-in channels object
-    var otherChannels = {
-        // testchannel
-        "180542031616147456": {name: "testgeneral", count: 0}
-    };
+        // filtered channels
+        if (dbObj.channelFilter.indexOf(msg.channel.id) != -1)
+            return;
 
-
-
-
-    function count() {
-        beaver.on("messageCreate", (msg) => {
-
-            if (msg.channel.guild === 'undefined') return;
-
-            if (msg.channel.id in mainChannels) {
-                mainChannels[msg.channel.id].count++;
-                //console.log("["+mainChannels[msg.channel.id].name+"]:"+ msg.author.username);
-            }
-            else if (msg.channel.id in otherChannels) {
-                otherChannels[msg.channel.id].count++;
-                //console.log("["+otherChannels[msg.channel.id].name+"]::"+ msg.author.username);
-            }
-            else { // channel not added yet
-                otherChannels[msg.channel.id] = {
-                    name: msg.channel.name,
-                    count: 1
-                };
-                //console.log(otherChannels[msg.channel.id].name + " CREATED");
-            }
-
-            var roles = msg.member.roles;
-
-            if (msg.author.id === "105167204500123648" ||
-                msg.member.roles.indexOf(founderRoleID) != -1 ||
-                msg.member.roles.indexOf(adminRoleID) != -1) {
-                if (msg.content === "~counts") {
-                    var response = createUpdate();
-                    beaver.createMessage(msg.channel.id, response);
-                }
-            }
-        });
+        // main channel message
+        if (msg.channel.id in dbObj.mainChannels) {
+            dbObj.mainChannels[msg.channel.id].count++;
+        }
+        // optin channel message
+        else if (msg.channel.id in dbObj.optinChannels) {
+            dbObj.optinChannels[msg.channel.id].count++;
+        }
+        else if (msg.channel.id in dbObj.otherChannels) {
+            dbObj.otherChannels[msg.channel.id].count++;
+        }
+        else { // new temp channel not in db
+            dbObj.otherChannels[msg.channel.id] = {
+                name: msg.channel.name,
+                count: 1
+            };
+        }
+    }
+    
+    
+    /*
+        Function: Counts Request
+        Type: Command
+        Create an update message and send to channel
+     */
+    function requestCounts(chanID, response = "") {
+        response += createUpdate();
+        beaver.createMessage(chanID, response);
     }
 
     /*
@@ -70,24 +70,60 @@ module.exports = function(beaver) {
     *   TODO: make nicer table
      */
     function createUpdate() {
+        var mainTotal = 0, otherTotal = 0, optinTotal= 0, tempTotal = 0;
+        var mainMsg = "", optInMsg = "", tempMsg = "";
+
+        // calculate totals and messages
+        for (var channel in dbObj.mainChannels) {
+            mainTotal += dbObj.mainChannels[channel].count;
+            mainMsg += dbObj.mainChannels[channel].name + ": " + dbObj.mainChannels[channel].count + "\n";
+        }
+
+        for (var channel in dbObj.optinChannels) {
+            otherTotal += dbObj.optinChannels[channel].count;
+            optinTotal += dbObj.optinChannels[channel].count;
+            optInMsg += dbObj.optinChannels[channel].name + ": " + dbObj.optinChannels[channel].count + "\n";
+        }
+
+        for (var channel in dbObj.otherChannels) {
+            otherTotal += dbObj.otherChannels[channel].count;
+            tempTotal += dbObj.otherChannels[channel].count;
+            tempMsg += dbObj.otherChannels[channel].name + ": " + dbObj.otherChannels[channel].count + "\n";
+        }
+
         var updateMsg = "```Logging started " + startTime + "\n\n"
             + "MAIN CHANNELS\n=============\n";
 
-        for (var channel in mainChannels) {
-            updateMsg += mainChannels[channel].name + ": " + mainChannels[channel].count + "\n";
-        }
+        updateMsg += "TOTAL: " + mainTotal + "\n-------------\n" + mainMsg;
+        updateMsg += "others: " + otherTotal + "\n";
 
-        updateMsg += "\nOPT-IN/TEMP CHANNELS\n====================\n"
+        updateMsg += "\nOPT-IN CHANNELS\n===============\n"
+        updateMsg += "TOTAL: " + optinTotal + "\n---------------\n" + optInMsg;
 
-        for (var channel in otherChannels) {
-            updateMsg += otherChannels[channel].name + ": " + otherChannels[channel].count + "\n";
-        }
+        updateMsg += "\nTEMP CHANNELS\n==============\n"
+        updateMsg += "TOTAL: " + tempTotal + "\n--------------\n" + tempMsg;
 
         return updateMsg + "```";
     }
 
+
+    /*
+        Reset and send daily update on midnight refresh
+     */
+    var dailyUpdateRule = new schedule.RecurrenceRule();
+    dailyUpdateRule.hour = 0;
+    dailyUpdateRule.minute = 0;
+    schedule.scheduleJob(dailyUpdateRule, function() {
+        console.log("[" + moment().format() + "] Sending Daily Update");
+        requestCounts("180542031616147456",
+            ":calendar_spiral: **`DAILY UPDATE for "+ moment().subtract(1, 'days').format('MMMM D')
+            + "`** :calendar_spiral: ");    // send update
+        resetCounts();
+    });
+
     return {
-        count: count
+        count: count,
+        requestCounts: requestCounts
     }
 
 };
