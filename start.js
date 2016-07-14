@@ -21,6 +21,8 @@ var filePath = "./db.json";
 if (process.env.OPENSHIFT_DATA_DIR != undefined)
     filePath = process.env.OPENSHIFT_DATA_DIR + "db.json";
 
+console.log('reading from' + filePath);
+
 db = jsonfile.readFileSync(filePath);
 console.log(getTimestamp() + " Loaded db from " + filePath);
 
