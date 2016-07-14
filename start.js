@@ -5,7 +5,7 @@
  */
 
 console.log("STARTO");
-console.log(process.env);
+console.log(process.env.OPENSHIFT_DATA_DIR);
 console.log("ENDO");
 
 var Eris = require('eris');
