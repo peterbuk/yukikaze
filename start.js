@@ -16,10 +16,13 @@ var schedule = require("node-schedule");
 var moment = require("moment");
 var jsonfile = require("jsonfile");
 
-// db
+// Load database
 var filePath = "./db.json";
+if (process.env.OPENSHIFT_DATA_DIR != undefined)
+    filePath = process.env.OPENSHIFT_DATA_DIR + "db.json";
+
 db = jsonfile.readFileSync(filePath);
-console.log(getTimestamp() + " Loaded db");
+console.log(getTimestamp() + " Loaded db from " + filePath);
 
 // custom modules
 var kancolle = require("./kancolle.js")(beaver, db);
@@ -48,7 +51,7 @@ kancolle.pvpTimer();    // start pvp timer
 beaver.on("messageCreate", (msg) => {
 
     // ignore PMs for now
-    if (msg.channel.guild === 'undefined') return;
+    if (msg.channel.guild === undefined) return;
 
     // Message Count
     msgCounting.count(msg);
