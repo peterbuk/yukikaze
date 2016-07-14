@@ -23,7 +23,7 @@ if (process.env.OPENSHIFT_DATA_DIR != undefined)
 
 console.log('reading from' + filePath);
 
-db = jsonfile.readFileSync(filePath);
+var db = jsonfile.readFileSync(filePath);
 console.log(getTimestamp() + " Loaded db from " + filePath);
 
 // custom modules
