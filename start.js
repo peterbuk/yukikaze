@@ -5,7 +5,7 @@
  */
 
 console.log("STARTO");
-console.log(process.env.OPENSHIFT_ENV_VAR);
+console.log(process.env);
 console.log("ENDO");
 
 var Eris = require('eris');
