@@ -50,6 +50,8 @@ beaver.on("messageCreate", (msg) => {
     // Message Count
     msgCounting.count(msg);
 
+    // ignore ~~slash~~
+    if (msg.content.startsWith("~~")) return;
 
     // ~ Commands
     if (msg.content.startsWith('~')) {
