@@ -53,7 +53,7 @@ beaver.on("messageCreate", (msg) => {
 
     // ~ Commands
     if (msg.content.startsWith('~')) {
-        var command = msg.author.username + " used " + msg.content;
+        var command = msg.channel.name + " -> " + msg.author.username + " used " + msg.content;
         console.log(getTimestamp() + command);
         
         /*****************
