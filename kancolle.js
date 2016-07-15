@@ -29,6 +29,7 @@ module.exports = function(beaver, obj) {
             console.log("[" + moment().format() + "]" + "pvp alert sent")
         });
     }
+    pvpTimer(); // start
 
 
     /*

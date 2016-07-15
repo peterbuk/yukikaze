@@ -4,10 +4,6 @@
  * Author: Eternith
  */
 
-console.log("STARTO");
-console.log(process.env.OPENSHIFT_DATA_DIR);
-console.log("ENDO");
-
 var Eris = require('eris');
 var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
 
@@ -21,8 +17,6 @@ var filePath = "./db.json";
 if (process.env.OPENSHIFT_DATA_DIR != undefined)
     filePath = process.env.OPENSHIFT_DATA_DIR + "db.json";
 
-console.log('reading from' + filePath);
-
 var db = jsonfile.readFileSync(filePath);
 console.log(getTimestamp() + " Loaded db from " + filePath);
 
@@ -35,9 +29,11 @@ var msgCounting = require("./msgCounting")(beaver, db);
 beaver.on("ready", () => { // When the bot is ready
     console.log(getTimestamp() + " On duty!");
 });
+/*
 beaver.on("error", (err) => {
    console.log(getTimestamp() + " Error: " + err);
 });
+//*/
 beaver.on("connect", () => {
     console.log(getTimestamp() + " Connected.");
 });
@@ -45,9 +41,7 @@ beaver.on("disconnect", () => {
     console.log(getTimestamp() + " Disconnected.");
 });
 
-
 beaver.connect();
-kancolle.pvpTimer();    // start pvp timer
 
 
 beaver.on("messageCreate", (msg) => {
@@ -71,6 +65,14 @@ beaver.on("messageCreate", (msg) => {
             beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
             var logmsg = msg.author.username + " used " + msg.content;
             console.log("[" + moment().format() + "]" + logmsg);
+        }
+        
+        if (msg.content === "~resetcounts") {
+            msgCounting.resetCounts(msg);
+        }
+
+        else if (msg.content === "~savedb") {
+            saveDB();
         }
 
         // under testing
@@ -103,10 +105,11 @@ beaver.on("messageCreate", (msg) => {
 // Save db to json file every 5 mins
 var dbSaveRule = new schedule.RecurrenceRule();
 dbSaveRule.minute = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
-schedule.scheduleJob(dbSaveRule, function() {
-    console.log(getTimestamp() + "saving db to file");
+schedule.scheduleJob(dbSaveRule, saveDB);
+
+function saveDB() {
     jsonfile.writeFileSync(filePath, db, {spaces: 2});
-})
+}
 
 
 /*

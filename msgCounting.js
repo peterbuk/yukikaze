@@ -11,9 +11,8 @@ module.exports = function(beaver, db) {
         Function: Reset Counts
         Type: Internal
         Reset the counts of each channel
-        TODO make this run at midnight
      */
-    function resetCounts() {
+    function resetCounts(caller = undefined) {
         for (var channel in dbObj.mainChannels) {
             dbObj.mainChannels[channel].count = 0;
         }
@@ -21,6 +20,16 @@ module.exports = function(beaver, db) {
             dbObj.optinChannels[channel].count = 0;
         }
         dbObj.otherChannels = {};
+
+        dbObj.totals.mainTotal.count = 0;
+        dbObj.totals.optinTotal.count = 0;
+        dbObj.totals.tempTotal.count = 0;
+
+        console.log(getTimestamp() + " Counts reset.");
+
+        if (caller != undefined) {
+            beaver.createMessage(caller.channel.id, "Counts reset.");
+        }
     }
 
     /*
@@ -38,19 +47,32 @@ module.exports = function(beaver, db) {
         // main channel message
         if (msg.channel.id in dbObj.mainChannels) {
             dbObj.mainChannels[msg.channel.id].count++;
+            dbObj.mainChannels[msg.channel.id].total++;
+            dbObj.totals.mainTotal.count++;
+            dbObj.totals.mainTotal.total++;
         }
         // optin channel message
         else if (msg.channel.id in dbObj.optinChannels) {
             dbObj.optinChannels[msg.channel.id].count++;
+            dbObj.optinChannels[msg.channel.id].total++;
+            dbObj.totals.optinTotal.count++;
+            dbObj.totals.optinTotal.total++;
         }
+        // temp channel message
         else if (msg.channel.id in dbObj.otherChannels) {
             dbObj.otherChannels[msg.channel.id].count++;
+            dbObj.otherChannels[msg.channel.id].total++;
+            dbObj.totals.tempTotal.count++;
+            dbObj.totals.tempTotal.total++;
         }
         else { // new temp channel not in db
             dbObj.otherChannels[msg.channel.id] = {
                 name: msg.channel.name,
-                count: 1
+                count: 1,
+                total: 1
             };
+            dbObj.totals.tempTotal.count++;
+            dbObj.totals.tempTotal.total++;
         }
     }
     
@@ -70,38 +92,46 @@ module.exports = function(beaver, db) {
     *   TODO: make nicer table
      */
     function createUpdate() {
-        var mainTotal = 0, otherTotal = 0, optinTotal= 0, tempTotal = 0;
         var mainMsg = "", optInMsg = "", tempMsg = "";
 
         // calculate totals and messages
         for (var channel in dbObj.mainChannels) {
-            mainTotal += dbObj.mainChannels[channel].count;
-            mainMsg += dbObj.mainChannels[channel].name + ": " + dbObj.mainChannels[channel].count + "\n";
+            mainMsg += dbObj.mainChannels[channel].name + ": " + dbObj.mainChannels[channel].count +
+                " | " + dbObj.mainChannels[channel].total + "\n";
         }
 
         for (var channel in dbObj.optinChannels) {
-            otherTotal += dbObj.optinChannels[channel].count;
-            optinTotal += dbObj.optinChannels[channel].count;
-            optInMsg += dbObj.optinChannels[channel].name + ": " + dbObj.optinChannels[channel].count + "\n";
+            optInMsg += dbObj.optinChannels[channel].name + ": " + dbObj.optinChannels[channel].count +
+                " | " + dbObj.optinChannels[channel].total + "\n";
         }
 
         for (var channel in dbObj.otherChannels) {
-            otherTotal += dbObj.otherChannels[channel].count;
-            tempTotal += dbObj.otherChannels[channel].count;
-            tempMsg += dbObj.otherChannels[channel].name + ": " + dbObj.otherChannels[channel].count + "\n";
+            tempMsg += dbObj.otherChannels[channel].name + ": " + dbObj.otherChannels[channel].count +
+                " | " + dbObj.otherChannels[channel].total + "\n";
         }
 
-        var updateMsg = "```Logging started " + dbObj.startTime + "\n\n"
-            + "MAIN CHANNELS\n=============\n";
+        var otherCount = dbObj.totals.optinTotal.count + dbObj.totals.tempTotal.count;
+        var otherTotal = dbObj.totals.optinTotal.total + dbObj.totals.tempTotal.total;
+        var grandCount = dbObj.totals.mainTotal.count + otherCount;
+        var grandTotal = dbObj.totals.mainTotal.total + otherTotal;
 
-        updateMsg += "TOTAL: " + mainTotal + "\n-------------\n" + mainMsg;
-        updateMsg += "others: " + otherTotal + "\n";
+        var updateMsg = "```Session started " + dbObj.startTime + "\n\n";
+
+        updateMsg += "GRAND TOTAL: " + grandCount + " | " + grandTotal + "\n\n";
+
+        updateMsg += "MAIN CHANNELS\n=============\n";
+
+        updateMsg += "TOTAL: " + dbObj.totals.mainTotal.count + " | " + dbObj.totals.mainTotal.total +
+            "\n-------------\n" + mainMsg;
+        updateMsg += "\n(others): " + otherCount + " | " + otherTotal + "\n";
 
         updateMsg += "\nOPT-IN CHANNELS\n===============\n"
-        updateMsg += "TOTAL: " + optinTotal + "\n---------------\n" + optInMsg;
+        updateMsg += "TOTAL: " + dbObj.totals.optinTotal.count + " | " + dbObj.totals.optinTotal.total +
+            "\n---------------\n" + optInMsg;
 
         updateMsg += "\nTEMP CHANNELS\n==============\n"
-        updateMsg += "TOTAL: " + tempTotal + "\n--------------\n" + tempMsg;
+        updateMsg += "TOTAL: " + dbObj.totals.tempTotal.count + " | " + dbObj.totals.tempTotal.total +
+            "\n--------------\n" + tempMsg;
 
         return updateMsg + "```";
     }
@@ -123,7 +153,13 @@ module.exports = function(beaver, db) {
 
     return {
         count: count,
+        resetCounts: resetCounts,
         requestCounts: requestCounts
+    }
+
+    // get the current timestamp for logging
+    function getTimestamp() {
+        return "[" + moment().format() + "]";
     }
 
 };
