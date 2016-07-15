@@ -67,9 +67,13 @@ beaver.on("messageCreate", (msg) => {
             else if (msg.content === "~savedb") {
                 saveDB();
             }
+            else if (msg.content === "~say") {
+                var m = msg.content.split(' ');
+                beaver.createMessage(m[1], m[2]);
+            }
 
             // under testing
-            if (msg.content === "~waopvp") {
+            else if (msg.content === "~waopvp") {
                 var pvpMembers = ["105167204500123648",
                     "175012017290084352"];
                 var notify = "DO YOUR GODDAMN PVP: ";
@@ -82,7 +86,7 @@ beaver.on("messageCreate", (msg) => {
                 beaver.createMessage(msg.channel.id, notify);
             }
 
-            if (msg.content === "~test") {
+            else if (msg.content === "~test") {
                 /*var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
                  var adminrole = server.roles.find(function (r) {return r.name === "Admin"})
                  console.log(adminrole);
