@@ -55,7 +55,7 @@ beaver.on("messageCreate", (msg) => {
 
     // ~ Commands
     if (msg.content.startsWith('~')) {
-        var legitCommand = true;
+        var legitCommand = false;
 
         /*****************
          ETER ONLY COMMANDS
@@ -63,9 +63,11 @@ beaver.on("messageCreate", (msg) => {
         if (msg.author.id === "105167204500123648") {
             if (msg.content === "~resetcounts") {
                 msgCounting.resetCounts(msg);
+                legitCommand = true;
             }
             else if (msg.content === "~savedb") {
                 saveDB();
+                legitCommand = true;
             }
 
             // say stuff with beaver
@@ -73,6 +75,7 @@ beaver.on("messageCreate", (msg) => {
                 var m = msg.content.split(' ');
                 var message = msg.content.substring(6+m[1].length);
                 beaver.createMessage(m[1], message);
+                legitCommand = true;
             }
 
             // under testing
@@ -87,6 +90,7 @@ beaver.on("messageCreate", (msg) => {
                     notify += user.mention + " ";
                 }
                 beaver.createMessage(msg.channel.id, notify);
+                legitCommand = true;
             }
 
             else if (msg.content === "~test") {
@@ -94,7 +98,9 @@ beaver.on("messageCreate", (msg) => {
                  var adminrole = server.roles.find(function (r) {return r.name === "Admin"})
                  console.log(adminrole);
                  */
+                legitCommand = true;
             }
+
         }
 
         /*********************
@@ -104,8 +110,10 @@ beaver.on("messageCreate", (msg) => {
         if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
             if (msg.content === "~counts") {
                 msgCounting.requestCounts(msg.channel.id);
+                legitCommand = true;
             }
         }
+
 
         /*****************
          PUBLIC COMMANDS
@@ -113,12 +121,11 @@ beaver.on("messageCreate", (msg) => {
         // COMMAND: KC Wikia Search
         if (msg.content.startsWith("~kc")) {
             kancolle.kcWikia(msg);
+            legitCommand = true;
         }
         else if (msg.content === "~beaver") {
             beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
-        }
-        else {
-            legitCommand = false;
+            legitCommand = true;
         }
 
         // log command
