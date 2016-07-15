@@ -50,25 +50,14 @@ beaver.on("messageCreate", (msg) => {
     // Message Count
     msgCounting.count(msg);
 
-    // COMMAND: Count update
-    if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
-        if (msg.content === "~counts") {
-            msgCounting.requestCounts(msg.channel.id);
-        }
-    }
 
-    // COMMAND: eter only comamands
+    /*****************
+     ETER ONLY COMMANDS
+     ******************/
     if (msg.author.id === "105167204500123648") {
-        if (msg.content === "~beaver") {
-            beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
-            var logmsg = msg.author.username + " used " + msg.content;
-            console.log("[" + moment().format() + "]" + logmsg);
-        }
-        
         if (msg.content === "~resetcounts") {
             msgCounting.resetCounts(msg);
         }
-
         else if (msg.content === "~savedb") {
             saveDB();
         }
@@ -85,19 +74,38 @@ beaver.on("messageCreate", (msg) => {
             beaver.createMessage(msg.channel.id, notify);
         }
 
-        // KC Wikia Search
-        if (msg.content.startsWith("~kc")) {
-            kancolle.kcWikia(msg);
-        }
-
         if (msg.content === "~test") {
             /*var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
              var adminrole = server.roles.find(function (r) {return r.name === "Admin"})
              console.log(adminrole);
              */
-            console.log(msg.member.roles);
         }
     }
+
+    /*********************
+     ADMIN/FOUNDER COMMANDS
+     *********************/
+    // COMMAND: Count update
+    if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
+        if (msg.content === "~counts") {
+            msgCounting.requestCounts(msg.channel.id);
+        }
+    }
+
+    /*****************
+      PUBLIC COMMANDS
+     *****************/
+    // COMMAND: KC Wikia Search
+    if (msg.content.startsWith("~kc")) {
+        kancolle.kcWikia(msg);
+    }
+    else if (msg.content === "~beaver") {
+        beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
+        var logmsg = msg.author.username + " used " + msg.content;
+        console.log("[" + moment().format() + "]" + logmsg);
+    }
+
+
 });
 
 // Save db to json file every 5 mins

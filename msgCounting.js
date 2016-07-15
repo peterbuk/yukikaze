@@ -152,7 +152,7 @@ module.exports = function(beaver, db) {
     dailyUpdateRule.minute = 0;
     schedule.scheduleJob(dailyUpdateRule, function() {
         console.log("[" + moment().format() + "] Sending Daily Update");
-        var update = requestCounts("180542031616147456",
+        var update = requestCounts(db.etc.botlogID,
             ":calendar_spiral: **`DAILY UPDATE for "+ moment().subtract(1, 'days').format('MMMM D')
             + "`** :calendar_spiral: ");    // send update
 
