@@ -29,11 +29,9 @@ var msgCounting = require("./msgCounting")(beaver, db);
 beaver.on("ready", () => { // When the bot is ready
     console.log(getTimestamp() + " On duty!");
 });
-/*
 beaver.on("error", (err) => {
-   console.log(getTimestamp() + " Error: " + err);
+   console.log(getTimestamp() + " Error: " + err + err.message);
 });
-//*/
 beaver.on("connect", () => {
     console.log(getTimestamp() + " Connected.");
 });

@@ -1,5 +1,10 @@
 var moment = require("moment");
 var schedule = require("node-schedule");
+var fs = require("fs");
+
+var archiveFilePath = "./archive.csv"
+if (process.env.OPENSHIFT_DATA_DIR != undefined)
+    filePath = process.env.OPENSHIFT_DATA_DIR + "archive.csv";
 
 module.exports = function(beaver, db) {
 
@@ -85,6 +90,8 @@ module.exports = function(beaver, db) {
     function requestCounts(chanID, response = "") {
         response += createUpdate();
         beaver.createMessage(chanID, response);
+
+        return response;
     }
 
     /*
@@ -145,9 +152,16 @@ module.exports = function(beaver, db) {
     dailyUpdateRule.minute = 0;
     schedule.scheduleJob(dailyUpdateRule, function() {
         console.log("[" + moment().format() + "] Sending Daily Update");
-        requestCounts("180542031616147456",
+        var update = requestCounts("180542031616147456",
             ":calendar_spiral: **`DAILY UPDATE for "+ moment().subtract(1, 'days').format('MMMM D')
             + "`** :calendar_spiral: ");    // send update
+
+        // archive update
+        fs.appendFile(archiveFilePath, update, (err) => {
+            if (err) throw err;
+            console.log(getTimestamp() + " Update archived.");
+        });
+
         resetCounts();
     });
 
