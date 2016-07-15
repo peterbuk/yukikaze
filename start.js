@@ -93,7 +93,7 @@ beaver.on("messageCreate", (msg) => {
          ADMIN/FOUNDER COMMANDS
          *********************/
         // COMMAND: Count update
-        else if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
+        if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
             if (msg.content === "~counts") {
                 msgCounting.requestCounts(msg.channel.id);
             }
@@ -103,7 +103,7 @@ beaver.on("messageCreate", (msg) => {
          PUBLIC COMMANDS
          *****************/
         // COMMAND: KC Wikia Search
-        else if (msg.content.startsWith("~kc")) {
+        if (msg.content.startsWith("~kc")) {
             kancolle.kcWikia(msg);
         }
         else if (msg.content === "~beaver") {
