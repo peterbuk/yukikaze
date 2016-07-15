@@ -51,60 +51,65 @@ beaver.on("messageCreate", (msg) => {
     msgCounting.count(msg);
 
 
-    /*****************
-     ETER ONLY COMMANDS
-     ******************/
-    if (msg.author.id === "105167204500123648") {
-        if (msg.content === "~resetcounts") {
-            msgCounting.resetCounts(msg);
-        }
-        else if (msg.content === "~savedb") {
-            saveDB();
-        }
-
-        // under testing
-        if (msg.content === "~waopvp") {
-            var pvpMembers = ["105167204500123648",
-                "175012017290084352"];
-            var notify = "DO YOUR GODDAMN PVP: ";
-            for (var i = 0; i < pvpMembers.length; i++) {
-                var user = beaver.users.find(function(u) {return u.id === pvpMembers[i]});
-                notify += user.mention + " ";
+    // ~ Commands
+    if (msg.content.startsWith('~')) {
+        var command = msg.author.username + " used " + msg.content;
+        console.log(getTimestamp() + command);
+        
+        /*****************
+         ETER ONLY COMMANDS
+         ******************/
+        if (msg.author.id === "105167204500123648") {
+            if (msg.content === "~resetcounts") {
+                msgCounting.resetCounts(msg);
             }
-            beaver.createMessage(msg.channel.id, notify);
+            else if (msg.content === "~savedb") {
+                saveDB();
+            }
+
+            // under testing
+            if (msg.content === "~waopvp") {
+                var pvpMembers = ["105167204500123648",
+                    "175012017290084352"];
+                var notify = "DO YOUR GODDAMN PVP: ";
+                for (var i = 0; i < pvpMembers.length; i++) {
+                    var user = beaver.users.find(function (u) {
+                        return u.id === pvpMembers[i]
+                    });
+                    notify += user.mention + " ";
+                }
+                beaver.createMessage(msg.channel.id, notify);
+            }
+
+            if (msg.content === "~test") {
+                /*var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
+                 var adminrole = server.roles.find(function (r) {return r.name === "Admin"})
+                 console.log(adminrole);
+                 */
+            }
         }
 
-        if (msg.content === "~test") {
-            /*var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
-             var adminrole = server.roles.find(function (r) {return r.name === "Admin"})
-             console.log(adminrole);
-             */
+        /*********************
+         ADMIN/FOUNDER COMMANDS
+         *********************/
+        // COMMAND: Count update
+        else if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
+            if (msg.content === "~counts") {
+                msgCounting.requestCounts(msg.channel.id);
+            }
+        }
+
+        /*****************
+         PUBLIC COMMANDS
+         *****************/
+        // COMMAND: KC Wikia Search
+        else if (msg.content.startsWith("~kc")) {
+            kancolle.kcWikia(msg);
+        }
+        else if (msg.content === "~beaver") {
+            beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
         }
     }
-
-    /*********************
-     ADMIN/FOUNDER COMMANDS
-     *********************/
-    // COMMAND: Count update
-    if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
-        if (msg.content === "~counts") {
-            msgCounting.requestCounts(msg.channel.id);
-        }
-    }
-
-    /*****************
-      PUBLIC COMMANDS
-     *****************/
-    // COMMAND: KC Wikia Search
-    if (msg.content.startsWith("~kc")) {
-        kancolle.kcWikia(msg);
-    }
-    else if (msg.content === "~beaver") {
-        beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
-        var logmsg = msg.author.username + " used " + msg.content;
-        console.log("[" + moment().format() + "]" + logmsg);
-    }
-
 
 });
 
