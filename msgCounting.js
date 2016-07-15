@@ -4,7 +4,7 @@ var fs = require("fs");
 
 var archiveFilePath = "./archive.csv"
 if (process.env.OPENSHIFT_DATA_DIR != undefined)
-    filePath = process.env.OPENSHIFT_DATA_DIR + "archive.csv";
+    archiveFilePath = process.env.OPENSHIFT_DATA_DIR + "archive.csv";
 
 module.exports = function(beaver, db) {
 
