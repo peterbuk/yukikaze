@@ -69,6 +69,7 @@ beaver.on("messageCreate", (msg) => {
             }
             else if (msg.content === "~say") {
                 var m = msg.content.split(' ');
+                console.log (m[1] + " " + m[2]);
                 beaver.createMessage(m[1], m[2]);
             }
 
