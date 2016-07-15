@@ -127,11 +127,16 @@ beaver.on("messageCreate", (msg) => {
             beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
             legitCommand = true;
         }
+        else if (msg.content === "~poi") {
+            beaver.createMessage(msg.channel.id, "I think you are looking for my friend, Yuudachi-poi?");
+            beaver.createMessage(msg.channel.id, "?poi");
+            legitCommand = true;
+        }
 
         // log command
         if (legitCommand) {
             var command = msg.channel.name + " -> " + msg.author.username + " used " + msg.content;
-            console.log(getTimestamp() + command);
+            console.log(getTimestamp() + " " + command);
         }
     }
 
