@@ -55,9 +55,8 @@ beaver.on("messageCreate", (msg) => {
 
     // ~ Commands
     if (msg.content.startsWith('~')) {
-        var command = msg.channel.name + " -> " + msg.author.username + " used " + msg.content;
-        console.log(getTimestamp() + command);
-        
+        var legitCommand = true;
+
         /*****************
          ETER ONLY COMMANDS
          ******************/
@@ -110,6 +109,15 @@ beaver.on("messageCreate", (msg) => {
         }
         else if (msg.content === "~beaver") {
             beaver.createMessage(msg.channel.id, "Yukikaze改 on duty!");
+        }
+        else {
+            legitCommand = false;
+        }
+
+        // log command
+        if (legitCommand) {
+            var command = msg.channel.name + " -> " + msg.author.username + " used " + msg.content;
+            console.log(getTimestamp() + command);
         }
     }
 
