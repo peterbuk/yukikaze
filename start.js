@@ -67,10 +67,12 @@ beaver.on("messageCreate", (msg) => {
             else if (msg.content === "~savedb") {
                 saveDB();
             }
-            else if (msg.content === "~say") {
+
+            // say stuff with beaver
+            else if (msg.content.startsWith("~say")) {
                 var m = msg.content.split(' ');
-                console.log (m[1] + " " + m[2]);
-                beaver.createMessage(m[1], m[2]);
+                var message = msg.content.substring(6+m[1].length);
+                beaver.createMessage(m[1], message);
             }
 
             // under testing
