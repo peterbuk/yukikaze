@@ -17,6 +17,15 @@ var filePath = "./db.json";
 if (process.env.OPENSHIFT_DATA_DIR != undefined)
     filePath = process.env.OPENSHIFT_DATA_DIR + "db.json";
 
+function saveDB() {
+    jsonfile.writeFileSync(filePath, db, {spaces: 2});
+}
+
+function loadDB() {
+    var db = jsonfile.readFileSync(filePath);
+    console.log(getTimestamp() + " Loaded db from " + filePath);
+}
+
 loadDB();
 
 // custom modules
@@ -149,15 +158,6 @@ beaver.on("messageCreate", (msg) => {
 var dbSaveRule = new schedule.RecurrenceRule();
 dbSaveRule.minute = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
 schedule.scheduleJob(dbSaveRule, saveDB);
-
-function saveDB() {
-    jsonfile.writeFileSync(filePath, db, {spaces: 2});
-}
-
-function loadDB() {
-    var db = jsonfile.readFileSync(filePath);
-    console.log(getTimestamp() + " Loaded db from " + filePath);
-}
 
 
 /*
