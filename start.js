@@ -17,8 +17,7 @@ var filePath = "./db.json";
 if (process.env.OPENSHIFT_DATA_DIR != undefined)
     filePath = process.env.OPENSHIFT_DATA_DIR + "db.json";
 
-var db = jsonfile.readFileSync(filePath);
-console.log(getTimestamp() + " Loaded db from " + filePath);
+loadDB();
 
 // custom modules
 var kancolle = require("./kancolle.js")(beaver, db);
@@ -67,6 +66,10 @@ beaver.on("messageCreate", (msg) => {
             }
             else if (msg.content === "~savedb") {
                 saveDB();
+                legitCommand = true;
+            }
+            else if (msg.content === "~loaddb") {
+                loadDB();
                 legitCommand = true;
             }
 
@@ -149,6 +152,11 @@ schedule.scheduleJob(dbSaveRule, saveDB);
 
 function saveDB() {
     jsonfile.writeFileSync(filePath, db, {spaces: 2});
+}
+
+function loadDB() {
+    var db = jsonfile.readFileSync(filePath);
+    console.log(getTimestamp() + " Loaded db from " + filePath);
 }
 
 
