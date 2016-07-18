@@ -17,7 +17,8 @@ var filePath = "./db.json";
 if (process.env.OPENSHIFT_DATA_DIR != undefined)
     filePath = process.env.OPENSHIFT_DATA_DIR + "db.json";
 
-var db = loadDB();
+var db = jsonfile.readFileSync(filePath);
+console.log(getTimestamp() + " Loaded db from " + filePath);
 
 // custom modules
 var kancolle = require("./kancolle.js")(beaver, db);
