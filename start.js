@@ -156,7 +156,7 @@ function saveDB() {
 }
 
 function loadDB() {
-    var db = jsonfile.readFileSync(filePath);
+    db = jsonfile.readFileSync(filePath);
     console.log(getTimestamp() + " Loaded db from " + filePath);
 }
 
