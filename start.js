@@ -82,6 +82,24 @@ beaver.on("messageCreate", (msg) => {
                 legitCommand = true;
             }
 
+            // set game
+            else if (msg.content.startsWith("~play")) {
+                var m = msg.content.split(' ');
+                var game = {};
+                game.type = 0;
+                game.url = "";
+                if (m.length > 1) {
+                    game.name = msg.content.substring(6);
+                }
+                else {
+                    game = null;
+                }
+                beaver.editGame(game);
+
+                console.log(getTimestamp() + " Game changed to " + msg.content.substring(6));
+                legitCommand = true;
+            }
+
             // under testing
             else if (msg.content === "~waopvp") {
                 var pvpMembers = ["105167204500123648",
@@ -123,7 +141,7 @@ beaver.on("messageCreate", (msg) => {
          PUBLIC COMMANDS
          *****************/
         // COMMAND: KC Wikia Search
-        if (msg.content.startsWith("~kc")) {
+        if (msg.content.startsWith("~kc ")) {
             kancolle.kcWikia(msg);
             legitCommand = true;
         }
