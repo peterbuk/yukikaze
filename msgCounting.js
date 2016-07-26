@@ -122,7 +122,7 @@ module.exports = function(beaver, db) {
         var grandCount = dbObj.totals.mainTotal.count + otherCount;
         var grandTotal = dbObj.totals.mainTotal.total + otherTotal;
 
-        var updateMsg = "```Session started " + dbObj.startTime + "\n\n";
+        var updateMsg = "```xl\nSession started " + dbObj.startTime + "\n\n";
 
         updateMsg += "GRAND TOTAL: " + grandCount + " | " + grandTotal + "\n\n";
 

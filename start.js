@@ -116,10 +116,26 @@ beaver.on("messageCreate", (msg) => {
             }
 
             else if (msg.content === "~test") {
-                /*var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
-                 var adminrole = server.roles.find(function (r) {return r.name === "Admin"})
-                 console.log(adminrole);
-                 */
+                var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
+                var log = "";
+
+                var colorRoles = {};
+                server.roles.forEach((r) => {
+                    if (r.name.startsWith('#')) {
+                        colorRoles[r.id] = r.name;
+                    }
+                })
+
+
+                server.members.forEach(function(m, key, mapObj) {
+                    for (var i = 0; i < m.roles.length; i++) {
+                        if (colorRoles[m.roles[i]] !== undefined) {
+                            log += m.user.username + " " + colorRoles[m.roles[i]] + "\n";
+                        }
+                    }
+                });
+
+                console.log(log);
                 legitCommand = true;
             }
 
