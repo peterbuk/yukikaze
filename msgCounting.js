@@ -85,8 +85,37 @@ module.exports = function(beaver, db) {
             dbObj.totals.tempTotal.total++;
         }
     }
-    
-    
+
+
+
+    /*
+     Function: New Optin
+     Type: Command
+     Usage: ~optin [channel-id]
+     Description: Move a channel from temp channel to optin channel
+     */
+    function newOptin(msg) {
+        var chanID = msg.content.split(' ')[1];
+        if (chanID != undefined && dbObj.otherChannels[chanID] != undefined) {
+
+            dbObj.optinChannels[chanID] = {};     // create channel obj
+            dbObj.optinChannels[chanID].name = dbObj.otherChannels[chanID].name;
+            dbObj.optinChannels[chanID].count = dbObj.otherChannels[chanID].count;
+            dbObj.optinChannels[chanID].total = dbObj.otherChannels[chanID].total;
+
+            // TODO fix total numbers?
+
+            delete dbObj.otherChannels[chanID]; // clean up temp channel
+            beaver.createMessage(msg.channel.id,
+                dbObj.optinChannels[chanID].name + " moved to optin channels.");
+        }
+        else
+            beaver.createMessage(msg.channel.id, "Error: usage ~optin [channel-id]");
+
+    }
+
+
+
     /*
         Function: Counts Request
         Type: Command
@@ -173,6 +202,7 @@ module.exports = function(beaver, db) {
 
     return {
         count: count,
+        newOptin: newOptin,
         resetCounts: resetCounts,
         requestCounts: requestCounts
     }
