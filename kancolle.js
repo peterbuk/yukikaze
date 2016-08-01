@@ -52,9 +52,9 @@ module.exports = function(beaver, db) {
      */
     function kcWikia(msg) {
         var url = "http://kancolle.wikia.com/wiki/";
-        var search = msg.content.split(' ');
-        if (search.length > 1)
-            beaver.createMessage(msg.channel.id, url + search[1]);
+        var search = msg.content.split(' ')[1];
+        if (search != undefined)
+            beaver.createMessage(msg.channel.id, url + search);
         else
             beaver.createMessage(msg.channel.id, "Error: Please enter one search term with no spaces.");
     }
