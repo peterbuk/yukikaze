@@ -30,7 +30,7 @@ var internal = require("./internal.js")(beaver, db);
 
 beaver.on("ready", () => { // When the bot is ready
     console.log(getTimestamp() + " On duty!");
-    fun.play("~play with logs~"); // set default play message
+    fun.play("with logs~", false); // set default play message
 });
 beaver.on("error", (err) => {
    console.log(getTimestamp() + " Error: " + err + err.message);

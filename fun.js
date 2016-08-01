@@ -51,23 +51,29 @@ module.exports = function(beaver, db) {
      Usage: ~play [game message] or ~play to clear
      Description: Set the game that Yukikaze is currently playing
      */
-    function play(msg) {
-        var m = msg.content.split(' ');
-
+    function play(msg, fromCommand=true) {
         var game = {
             type: 0,
             url: ""
         };
 
-        if (m.length > 1) {
-            game.name = msg.content.substring(6);
+        // source from command, have msg to parse
+        if (fromCommand) {
+            var m = msg.content.split(' ');
+
+            if (m.length > 1) {
+                game.name = msg.content.substring(6);
+            }
+            else {
+                game = null;
+            }
         }
         else {
-            game = null;
+            game.name = msg;
         }
         beaver.editGame(game);
 
-        console.log(getTimestamp() + " Game changed to " + msg.content.substring(6));
+        console.log(getTimestamp() + " Game changed.");
     }
 
     return {
