@@ -74,6 +74,10 @@ beaver.on("messageCreate", (msg) => {
                 msgCounting.newOptin(msg);
                 legitCommand = true;
             }
+            else if (msg.content.startsWith("~deleteoptin")) {
+                msgCounting.deleteOptin(msg);
+                legitCommand = true;
+            }
                 
         // internal commands
             else if (msg.content === "~savedb") {

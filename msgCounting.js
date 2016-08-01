@@ -103,15 +103,38 @@ module.exports = function(beaver, db) {
             dbObj.optinChannels[chanID].count = dbObj.otherChannels[chanID].count;
             dbObj.optinChannels[chanID].total = dbObj.otherChannels[chanID].total;
 
-            // TODO fix total numbers?
+            // fix total numbers
+            dbObj.totals.optinTotal.count += dbObj.optinChannels[chanID].count;
+            dbObj.totals.optinTotal.total += dbObj.optinChannels[chanID].total;
+            dbObj.totals.tempTotal.count -= dbObj.otherChannels[chanID].count;
+            dbObj.totals.tempTotal.count -= dbObj.otherChannels[chanID].total;
 
             delete dbObj.otherChannels[chanID]; // clean up temp channel
             beaver.createMessage(msg.channel.id,
                 dbObj.optinChannels[chanID].name + " moved to optin channels.");
         }
         else
-            beaver.createMessage(msg.channel.id, "Error: usage ~optin [channel-id]");
+            beaver.createMessage(msg.channel.id, "Error: usage `~optin [channel-id]`");
 
+    }
+
+
+    /*
+     Function: Delete Optin
+     Type: Command
+     Usage: ~deleteoptin [channel-id]
+     Description: Delete a channel from optin channels
+     */
+    function deleteOptin(msg) {
+        var chanID = msg.content.split(' ')[1];
+        if (chanID != undefined && dbObj.optinChannels[chanID] != undefined) {
+            var name = dbObj.optinChannels[chanID].name;
+            delete dbObj.optinChannels[chanID];
+            beaver.createMessage(msg.channel.id, name + " deleted.");
+        }
+        else {
+            beaver.createMessage(msg.channel.id, "Error: usage `~deleteoptin [channel-id]`");
+        }
     }
 
 
@@ -203,6 +226,7 @@ module.exports = function(beaver, db) {
     return {
         count: count,
         newOptin: newOptin,
+        deleteOptin: deleteOptin,
         resetCounts: resetCounts,
         requestCounts: requestCounts
     }
