@@ -5,8 +5,9 @@
 
 var schedule = require("node-schedule");
 var moment = require("moment");
+var jsonfile = require("jsonfile");
 
-module.exports = function(beaver, db) {
+module.exports = function(beaver, db, filePath) {
 
     /*
      Function: Load DB

@@ -24,7 +24,7 @@ console.log(getTimestamp() + " Loaded db from " + filePath);
 var kancolle = require("./kancolle.js")(beaver, db);
 var msgCounting = require("./msgCounting.js")(beaver, db);
 var fun = require("./fun.js")(beaver, db);
-var internal = require("./internal.js")(beaver, db);
+var internal = require("./internal.js")(beaver, db, filePath);
 
 
 
