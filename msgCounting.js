@@ -1,3 +1,8 @@
+/*
+ *  Msg Counting functionality
+ *  ----------------------
+ */
+
 var moment = require("moment");
 var schedule = require("node-schedule");
 var fs = require("fs");
@@ -15,7 +20,7 @@ module.exports = function(beaver, db) {
     /*
         Function: Reset Counts
         Type: Internal
-        Reset the counts of each channel
+        Description: Reset the counts of each channel
      */
     function resetCounts(caller = undefined) {
         for (var channel in dbObj.mainChannels) {
@@ -40,7 +45,7 @@ module.exports = function(beaver, db) {
     /*
         Function: Count Message
         Type: Passive
-        Counts each message sent from every channel.
+        Description: Counts each message sent from every channel.
      */
     function count(msg) {
         //console.log("["+msg.channel.name+"]:"+ msg.author.username);
@@ -85,7 +90,8 @@ module.exports = function(beaver, db) {
     /*
         Function: Counts Request
         Type: Command
-        Create an update message and send to channel
+        Usage: ~counts
+        Description: Create an update message and send to channel
      */
     function requestCounts(chanID, response = "") {
         response += createUpdate();

@@ -8,15 +8,12 @@
 var schedule = require("node-schedule");
 var moment = require("moment");
 
-module.exports = function(beaver, obj) {
-
-    
+module.exports = function(beaver, db) {
 
     /*
         Function: PVP Daily Timer
         Type: Passive
-        Sends a message one hour before each PVP set expires.
-        Alerts a list of registered users.
+        Description: Sends a message one hour before each PVP set expires.
      */
     function pvpTimer() {
         var pvpRule = new schedule.RecurrenceRule();
@@ -30,12 +27,28 @@ module.exports = function(beaver, obj) {
         });
     }
     pvpTimer(); // start
+    
+    
+    // alert for pvp, not currently used
+    function pvpAlert(msg) {
+        var pvpMembers = ["105167204500123648",
+            "175012017290084352"];
+        var notify = "DO YOUR GODDAMN PVP: ";
+        for (var i = 0; i < pvpMembers.length; i++) {
+            var user = beaver.users.find(function (u) {
+                return u.id === pvpMembers[i]
+            });
+            notify += user.mention + " ";
+        }
+        beaver.createMessage(msg.channel.id, notify);
+    }
 
 
     /*
         Functionality: KC Wikia Search
         Type: Command
-        Returns the url for the wikia page with the search term appended
+        Usage: ~kc [search term]
+        Description: Returns the url for the wikia page with the search term appended
      */
     function kcWikia(msg) {
         var url = "http://kancolle.wikia.com/wiki/";
@@ -48,6 +61,7 @@ module.exports = function(beaver, obj) {
 
     return {
         pvpTimer: pvpTimer,
+        pvpAlert: pvpAlert,
         kcWikia: kcWikia
     }
 
