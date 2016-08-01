@@ -99,7 +99,7 @@ beaver.on("messageCreate", (msg) => {
                 legitCommand = true;
             }
             else if (msg.content.startsWith("~play")) {
-                fun.play(msg);
+                fun.play(msg, true);
                 legitCommand = true;
             }
 
