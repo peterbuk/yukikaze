@@ -107,7 +107,7 @@ module.exports = function(beaver, db) {
             dbObj.totals.optinTotal.count += dbObj.optinChannels[chanID].count;
             dbObj.totals.optinTotal.total += dbObj.optinChannels[chanID].total;
             dbObj.totals.tempTotal.count -= dbObj.otherChannels[chanID].count;
-            dbObj.totals.tempTotal.count -= dbObj.otherChannels[chanID].total;
+            dbObj.totals.tempTotal.total -= dbObj.otherChannels[chanID].total;
 
             delete dbObj.otherChannels[chanID]; // clean up temp channel
             beaver.createMessage(msg.channel.id,
