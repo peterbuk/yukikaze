@@ -70,6 +70,10 @@ beaver.on("messageCreate", (msg) => {
                 msgCounting.resetCounts(msg);
                 legitCommand = true;
             }
+            else if (msg.content.startsWith("~optin")) {
+                msgCounting.newOptin(msg);
+                legitCommand = true;
+            }
                 
         // internal commands
             else if (msg.content === "~savedb") {
