@@ -85,7 +85,7 @@ module.exports = function(beaver, db) {
         if (guild.id === db.etc.rAnimeServerID) {
 
             var time = "[" + moment().format('YYYY MMM D  HH:mm:ss ZZ') + "]";
-            var user = member.user.username + member.user.discriminator;
+            var user = member.user.username + " #" + member.user.discriminator;
             var msg = "";
 
             if (event === "j") {
