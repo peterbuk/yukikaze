@@ -68,7 +68,7 @@ beaver.on("messageCreate", (msg) => {
     // TEMP COMMAND UNTIL POI COMES BACK
     if (msg.content.startsWith("?tag")) {
         console.log(getTimestamp() + " " + msg.channel.name + " -> " + msg.author.username +
-            "tried to use " + msg.content);
+            " tried to use " + msg.content);
         beaver.createMessage(msg.channel.id, "`Poi is missing... She'll be back on Sunday!`")
     }
 
