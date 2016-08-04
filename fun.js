@@ -8,6 +8,7 @@ var moment = require("moment");
 
 module.exports = function(beaver, db) {
 
+
     /*
      Function: Say
      Type: Command
@@ -44,7 +45,6 @@ module.exports = function(beaver, db) {
     }
     
     
-
     /*
      Function: Play
      Type: Command
@@ -76,11 +76,38 @@ module.exports = function(beaver, db) {
         console.log(getTimestamp() + " Game changed.");
     }
 
+    /*
+     Function: Member Join Leave
+     Type: Event
+     Description: Send a message when a new member joins or leaves
+     */
+    function memberJoinLeave(guild, member, event) {
+        if (guild.id === db.etc.rAnimeServerID) {
+
+            var time = "[" + moment().format('YYYY MMM D  HH:mm:ss ZZ') + "]";
+            var user = member.user.username + member.user.discriminator;
+            var msg = "";
+
+            if (event === "j") {
+                msg = time + " :white_check_mark: **" + user + "** has joined the server (" +
+                    member.id + ") :white_check_mark:";
+                console.log(getTimestamp() + " " + user + "has joined.")
+            }
+            else { // leave
+                msg = time + " :x: **" + user + "** has left the server (" +
+                    member.id + ") :x:";
+                console.log(getTimestamp() + " " + user + "has left.")
+            }
+            beaver.createMessage(db.etc.botlogID, msg);
+        }
+    }
+
     return {
         say: say,
         poi: poi,
         beaverCheck, beaverCheck,
-        play: play
+        play: play,
+        memberJoinLeave: memberJoinLeave
     }
 
     // get the current timestamp for logging

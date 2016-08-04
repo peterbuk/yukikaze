@@ -42,6 +42,15 @@ beaver.on("disconnect", () => {
     console.log(getTimestamp() + " Disconnected.");
 });
 
+// on new member join
+beaver.on("guildMemberAdd", (guild, member) => {
+    fun.memberJoinLeave(guild, member, "j");
+});
+beaver.on("guildMemberRemove", (guild, member) => {
+    fun.memberJoinLeave(guild, member, "l");
+})
+
+
 beaver.connect();
 
 
