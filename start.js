@@ -146,6 +146,9 @@ beaver.on("messageCreate", (msg) => {
             fun.poi(msg);
             legitCommand = true;
         }
+        else if (msg.content.startsWith("?tag ")) {
+            beaver.createMessage(msg.channel.id, "`Poi is missing... She'll be back on Sunday!`")
+        }
 
 
 
