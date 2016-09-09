@@ -5,7 +5,6 @@
  */
 
 var Eris = require('eris');
-var beaver = new Eris("Bot MTc1MDEyMDE3MjkwMDg0MzUy.CrOt1A.bbSJlahyowkslTi93h0slXreWmg");
 
 // modules
 var schedule = require("node-schedule");
@@ -19,6 +18,8 @@ if (process.env.OPENSHIFT_DATA_DIR != undefined)
 
 var db = jsonfile.readFileSync(filePath);
 console.log(getTimestamp() + " Loaded db from " + filePath);
+
+var beaver = new Eris(db.token);
 
 // custom modules
 var kancolle = require("./kancolle.js")(beaver, db);
