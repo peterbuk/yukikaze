@@ -47,34 +47,55 @@ module.exports = function(beaver, db, filePath) {
      Description: Lol spaghetti code
      */
     function playground(msg) {
+        /*
         var server = beaver.guilds.find(function(g) {return g.id === "107915021203304448"});
         var log = "";
+        server.channels.forEach((c) => {
+            if (c.type === "text")
+                log += c.name + ": " + c.position +"\n";
+        });
+         console.log(log);
+        */
 
-        var colorRoles = {};
-        server.roles.forEach((r) => {
-            if (r.name.startsWith('#')) {
-                colorRoles[r.id] = r.name;
-            }
-        })
-
-        server.members.forEach(function(m, key, mapObj) {
-            for (var i = 0; i < m.roles.length; i++) {
-                if (colorRoles[m.roles[i]] !== undefined) {
-                    log += m.user.username + " " + colorRoles[m.roles[i]] + "\n";
-                }
-            }
+        var server = beaver.guilds.find(function(g) {return g.id === "180542031616147456"});
+        var log = "ORDER:\n";
+        server.channels.forEach((c) => {
+            if (c.type == "0")
+                log += c.name + ": " + c.position +"\n";
         });
 
+        beaver.createMessage(msg.channel.id, log);
         console.log(log);
-        legitCommand = true;
+
+
     }
 
+    function order(msg) {
+        var channelOrder = {
+            "180542031616147456": 0,
+            "182969967463890945": 1,
+            "215548516649402368": 2,
+            "215548527885942784": 3,
+            "215548538489274378": 4,
+            "215548548618518529": 5
+        };
 
+        var server = beaver.guilds.find(function(g) {return g.id === "180542031616147456"});
+        server.channels.forEach((c) => {
+            if (c.type == "0") {
+                if (c.position != channelOrder[c.id]) {
+                    console.log("moving " + c.name + " from " + c.position + " to " + channelOrder[c.id] + "\n");
+                    beaver.editChannelPosition("180542031616147456", c.id, channelOrder[c.id]);
+                }
+             }
+        });
+    }
 
 
     return {
         saveDB: saveDB,
         loadDB: loadDB,
+        order: order,
         playground: playground
     }
 

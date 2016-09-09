@@ -59,8 +59,9 @@ beaver.on("messageCreate", (msg) => {
     // ignore PMs for now
     if (msg.channel.guild === undefined) return;
 
-    // Message Count
-    msgCounting.count(msg);
+    // Message Count if r/anime server
+    if (msg.channel.guild.id === db.etc.rAnimeServerID)
+        msgCounting.count(msg);
 
     // ignore ~~slash~~
     if (msg.content.startsWith("~~")) return;
@@ -101,6 +102,11 @@ beaver.on("messageCreate", (msg) => {
                 internal.playground(msg);
                 legitCommand = true;
             }
+            else if (msg.content === "~order") {
+                internal.order(msg);
+                legitCommand = true;
+            }
+                
                 
         // fun commands
             else if (msg.content.startsWith("~say")) {
