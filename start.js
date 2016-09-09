@@ -5,7 +5,7 @@
  */
 
 var Eris = require('eris');
-var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CmW86w.sd_RFxhnTnQU7s5_Sueczz-vcgM");
+var beaver = new Eris("MTc1MDEyMDE3MjkwMDg0MzUy.CrOt1A.bbSJlahyowkslTi93h0slXreWmg");
 
 // modules
 var schedule = require("node-schedule");
