@@ -70,15 +70,15 @@ module.exports = function(beaver, db, filePath) {
 
 
     function order(msg) {
-        var server = beaver.guilds.find(function(g) {return g.id === db.etc.rAnimeServerID});
+        var server = beaver.guilds.find(function(g) {return g.id == db.etc.rAnimeServerID});
         var log = "CHANNEL ORDER:\n";
         server.channels.forEach((c) => {
             if (c.type == "0")
                 log += c.name + ": " + c.position +"\n";
         });
 
-        beaver.createMessage(msg.channel.id, log);
         console.log(log);
+        beaver.createMessage(msg.channel.id, log);
     }
 
     function channelOrder(msg) {
