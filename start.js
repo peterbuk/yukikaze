@@ -103,10 +103,6 @@ beaver.on("messageCreate", (msg) => {
                 internal.playground(msg);
                 legitCommand = true;
             }
-            else if (msg.content === "~order") {
-                internal.order(msg);
-                legitCommand = true;
-            }
                 
                 
         // fun commands
@@ -133,6 +129,10 @@ beaver.on("messageCreate", (msg) => {
         if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
             if (msg.content === "~counts") {
                 msgCounting.requestCounts(msg.channel.id);
+                legitCommand = true;
+            }
+            else if (msg.content === "~order") {
+                internal.order(msg);
                 legitCommand = true;
             }
         }

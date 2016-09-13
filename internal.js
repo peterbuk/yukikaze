@@ -66,11 +66,22 @@ module.exports = function(beaver, db, filePath) {
 
         beaver.createMessage(msg.channel.id, log);
         console.log(log);
-
-
     }
 
+
     function order(msg) {
+        var server = beaver.guilds.find(function(g) {return g.id === db.etc.rAnimeServerID});
+        var log = "CHANNEL ORDER:\n";
+        server.channels.forEach((c) => {
+            if (c.type == "0")
+                log += c.name + ": " + c.position +"\n";
+        });
+
+        beaver.createMessage(msg.channel.id, log);
+        console.log(log);
+    }
+
+    function channelOrder(msg) {
         var channelOrder = {
             "180542031616147456": 0,
             "182969967463890945": 1,
