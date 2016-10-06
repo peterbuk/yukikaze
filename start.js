@@ -12,6 +12,7 @@ var moment = require("moment");
 var jsonfile = require("jsonfile");
 
 var http = require("http");
+var env = process.env;
 
 // Load database
 var filePath = "./db.json";
