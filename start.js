@@ -11,6 +11,8 @@ var schedule = require("node-schedule");
 var moment = require("moment");
 var jsonfile = require("jsonfile");
 
+var http = require("http");
+
 // Load database
 var filePath = "./db.json";
 if (process.env.OPENSHIFT_DATA_DIR != undefined)
@@ -188,4 +190,14 @@ function isAdminFounder(roles) {
 }
 
 
+// prevent idle
 
+var server = http.createServer(function (req, res) {
+    console.log("http server respond sent")
+    res.writeHead(200);
+    res.end();
+});
+
+server.listen(function () {
+    console.log(`Request get`);
+})
