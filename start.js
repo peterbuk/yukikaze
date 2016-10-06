@@ -198,6 +198,6 @@ var server = http.createServer(function (req, res) {
     res.end();
 });
 
-server.listen(function () {
+server.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {
     console.log(`Request get`);
 })
