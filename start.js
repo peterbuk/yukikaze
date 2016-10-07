@@ -194,7 +194,7 @@ function isAdminFounder(roles) {
 // prevent idle
 
 var server = http.createServer(function (req, res) {
-    console.log("http server respond sent")
+    //console.log("http server respond sent")
     res.writeHead(200);
     res.end();
 });
