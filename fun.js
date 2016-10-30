@@ -101,13 +101,27 @@ module.exports = function(beaver, db) {
             beaver.createMessage(db.etc.botlogID, msg);
         }
     }
+    
+    /*
+     Function: Light theme counter
+     Type: Command
+     Description: light theme complain counter for eter
+     */
+    function lightCount(msg) {
+        if (msg.content === "~lighttheme++")
+            db.etc.lightThemeCount++;
+
+        beaver.createMessage(msg.channel.id, "`Number of times people have complained about Eter's light theme: "
+            + db.etc.lightThemeCount + "`");  
+    }
 
     return {
         say: say,
         poi: poi,
         beaverCheck, beaverCheck,
         play: play,
-        memberJoinLeave: memberJoinLeave
+        memberJoinLeave: memberJoinLeave,
+        lightCount: lightCount
     }
 
     // get the current timestamp for logging

@@ -70,12 +70,7 @@ beaver.on("messageCreate", (msg) => {
     // ignore ~~slash~~
     if (msg.content.startsWith("~~")) return;
 
-    // light theme complain counter for eter
-    if (msg.author.id === "105167204500123648" && msg.content === "~lighttheme++") {
-        db.etc.lightThemeCount++;
-        beaver.createMessage(msg.channel.id, "`Number of times people have complained about Eter's light theme: "
-            + db.etc.lightThemeCount + "`");
-    }
+
 
     // ~ Commands
     if (msg.content.startsWith('~')) {
@@ -101,6 +96,10 @@ beaver.on("messageCreate", (msg) => {
             }
             else if (msg.content.startsWith("~back")) {
                 msgCounting.backCount(msg);
+                legitCommand = true;
+            }
+            else if (msg.content.startsWith("~lighttheme")) {
+                fun.lightCount(msg);
                 legitCommand = true;
             }
                 
