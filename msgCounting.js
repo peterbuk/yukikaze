@@ -223,12 +223,35 @@ module.exports = function(beaver, db) {
         resetCounts();
     });
 
+    /*
+        Count messages in given channel id
+        Do not overuse
+        Usage: ~back [channel-id]
+     */
+    function backCount(msg) {
+        var promise = beaver.getMessages(msg.content.split(' ')[1], 10000, undefined, undefined, undefined);
+
+        promise.then((msgs)=> {
+            console.log('got ' + msgs.length);
+            beaver.createMessage(msg.channel.id, "Got " + msgs.length + " messages.");
+
+
+            //processing msgs
+            /*for (var i = 0; i < msgs.length; i++) {
+                console.log(msgs[i].author.username + ": ");
+            }*/
+        }, (error) => {
+            console.log('failed to backCount');
+        });
+    }
+
     return {
         count: count,
         newOptin: newOptin,
         deleteOptin: deleteOptin,
         resetCounts: resetCounts,
-        requestCounts: requestCounts
+        requestCounts: requestCounts,
+        backCount: backCount
     }
 
     // get the current timestamp for logging
