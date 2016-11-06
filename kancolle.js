@@ -17,11 +17,11 @@ module.exports = function(beaver, db) {
      */
     function pvpTimer() {
         var pvpRule = new schedule.RecurrenceRule();
-        pvpRule.hour = [1, 13];
+        pvpRule.hour = [0, 12];
         pvpRule.minute = 0;
         
         var pvp = schedule.scheduleJob(pvpRule, function() {
-            var msg = "**PVP ALERT**\nRESETS IN ONE HOUR";
+            var msg = ":crossed_swords: **PVP ALERT** :crossed_swords:\nRESETS IN ONE HOUR";
             beaver.createMessage("137807564028116993", msg);
             console.log("[" + moment().format() + "]" + "pvp alert sent")
         });
