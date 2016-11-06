@@ -66,7 +66,7 @@ module.exports = function(beaver, db) {
      Description: Add user id to pvp set
      */
     function registerPvp(msg) {
-        var errorMsg = "Invalid input.\nRegister for either set A (3:00JST) or set B (15:00JST) with `~registerpvp A` or `~registerpvp B`\n" +
+        var errorMsg = "Register for either set A (3:00JST) or set B (15:00JST) with `~registerpvp A` or `~registerpvp B`\n" +
             "To unregister, enter `~registerpvp cancel`";
         var m = msg.content.split(' ');
 
