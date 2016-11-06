@@ -71,7 +71,7 @@ module.exports = function(beaver, db) {
         var m = msg.content.split(' ');
 
         // didn't specify A or B
-        if (m.length == 0) {
+        if (m.length == 1) {
             beaver.createMessage(msg.channel.id, errorMsg);
             return;
         }
