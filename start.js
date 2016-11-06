@@ -129,8 +129,9 @@ beaver.on("messageCreate", (msg) => {
             }
 
         // kancolle comamnds
-            else if (msg.content === "~waopvp") {
-                kancolle.pvpAlert(msg);
+            else if (msg.content === "~pvptest") {
+                kancolle.pvpAlert('A');
+                kancolle.pvpAlert('B');
                 legitCommand = true;
             }
         }
@@ -164,6 +165,10 @@ beaver.on("messageCreate", (msg) => {
         }
         else if (msg.content === "~poi") {
             fun.poi(msg);
+            legitCommand = true;
+        }
+        else if (msg.content.startsWith("~registerpvp")) {
+            kancolle.registerPvp(msg);
             legitCommand = true;
         }
 
