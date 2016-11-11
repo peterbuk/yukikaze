@@ -108,7 +108,7 @@ module.exports = function(beaver, db) {
                 db.pvpAlert.setA.splice(indexA, 1);
             }
             if (indexB > -1) {
-                db.pvpAlert.setB.splice(indexA, 1);
+                db.pvpAlert.setB.splice(indexB, 1);
             }
             beaver.createMessage(msg.channel.id, "<@" + id + "> has been removed from all pvp sets.");
         }
