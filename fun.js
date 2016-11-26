@@ -71,7 +71,7 @@ module.exports = function(beaver, db) {
         else {
             game.name = msg;
         }
-        beaver.editGame(game);
+        beaver.editStatus("online", game);
 
         console.log(getTimestamp() + " Game changed.");
     }
