@@ -27,9 +27,8 @@ module.exports = function(beaver, db, filePath) {
      Usage: ~savedb
      Description: Save the current DB object to file
      */
-    function saveDB(msg) {
+    function saveDB() {
         jsonfile.writeFileSync(filePath, db, {spaces: 2});
-        beaver.createMessage(msg.channel.id, "`db saved`");
     }
 
     /*
