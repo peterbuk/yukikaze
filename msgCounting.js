@@ -49,6 +49,7 @@ module.exports = function(beaver, db) {
         for (var channel in dbLL) {
             dbLL[channel].count = 0;
         }
+
     }
 
     /*

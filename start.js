@@ -68,6 +68,9 @@ beaver.on("messageCreate", (msg) => {
         (msg.channel.guild.id === db.etc.rLLServerID))
         msgCounting.count(msg);
 
+    if (msg.channel.guild.id === "284969274240532481")
+        db.count++;
+
     // ignore ~~slash~~
     if (msg.content.startsWith("~~")) return;
 
