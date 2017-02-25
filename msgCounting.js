@@ -185,7 +185,7 @@ module.exports = function(beaver, db) {
     }
 
     function updateLL() {
-        var message = "```xl\n(daily | total)\n================\n";
+        var message = "```xl\nServer-wide channel msg counts\n(daily | total)\n================\n";
 
         for (var channel in dbLL) {
             message += dbLL[channel].name + ": " + dbLL[channel].count +
