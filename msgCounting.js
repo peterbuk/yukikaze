@@ -176,6 +176,10 @@ module.exports = function(beaver, db) {
         else if (guild === db.etc.rLLServerID) {
             response += updateLL();
         }
+        else if (msg.channel.guild.id === "284969274240532481") {
+            response = "```count : " + db.count + "```";
+            beaver.createMessage(channel, response);
+        }
         else {  // test channel, do both
             response += createUpdate() + "\n";
             response += updateLL();
