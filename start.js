@@ -63,8 +63,9 @@ beaver.on("messageCreate", (msg) => {
     // ignore PMs for now
     if (msg.channel.guild === undefined) return;
 
-    // Message Count if r/anime server
-    if (msg.channel.guild.id === db.etc.rAnimeServerID)
+    // Message Count if r/anime server or r/LL server
+    if ((msg.channel.guild.id === db.etc.rAnimeServerID) ||
+        (msg.channel.guild.id === db.etc.rLLServerID))
         msgCounting.count(msg);
 
     // ignore ~~slash~~
@@ -79,7 +80,7 @@ beaver.on("messageCreate", (msg) => {
         /*****************
          ETER ONLY COMMANDS
          ******************/
-        if (msg.author.id === "105167204500123648") {
+        if (msg.author.id === db.etc.eterID) {
             
         // msgCounting commands
             if (msg.content === "~resetcounts") {
@@ -129,26 +130,34 @@ beaver.on("messageCreate", (msg) => {
             }
 
         // kancolle comamnds
-            else if (msg.content === "~pvptest") {
+            /*else if (msg.content === "~pvptest") {
                 kancolle.pvpAlert('A');
                 kancolle.pvpAlert('B');
                 legitCommand = true;
-            }
+            }*/
+
+                // broken
+            /*else if (msg.content.startsWith("~pm")) {
+                var user = msg.content.split(' ')[1];
+                var m = msg.content.split(' ')[2];
+                var dmChan = beaver.getDMChannel(user);
+                beaver.createMessage(dmChan, m);
+            }*/
         }
 
         /*********************
          ADMIN/FOUNDER COMMANDS
          *********************/
         // COMMAND: Count update
-        if (msg.author.id === "105167204500123648" || isAdminFounder(msg.member.roles)) {
-            if (msg.content === "~counts") {
-                msgCounting.requestCounts(msg.channel.id);
+        if (msg.author.id === db.etc.eterID || isAdminFounder(msg.member.roles)) {
+            if (msg.content === "~counts" || msg.content === "~count") {
+                msgCounting.requestCounts(msg.channel.guild.id, msg.channel.id);
                 legitCommand = true;
             }
-            else if (msg.content === "~order") {
+            /*else if (msg.content === "~order") {
                 internal.order(msg);
                 legitCommand = true;
-            }
+            }*/
         }
 
 
@@ -199,7 +208,9 @@ function getTimestamp() {
 // helper function to check if a member is an admin or founder
 function isAdminFounder(roles) {
     if (roles.indexOf(db.etc.adminRoleID) != -1 ||
-        roles.indexOf(db.etc.founderRoleID) != -1)
+        roles.indexOf(db.etc.founderRoleID) != -1 ||
+        roles.indexOf(db.etc.rLLModRoleID) != -1 ||
+        roles.indexOf(db.etc.discordModRoleID) != -1)
         return true;
     else
         return false;

@@ -14,6 +14,7 @@ if (process.env.OPENSHIFT_DATA_DIR != undefined)
 module.exports = function(beaver, db) {
 
     var dbObj = db.msgCounting;
+    var dbLL = db.msgCountingLL;
 
     dbObj.startTime = "[" + moment().format() + "]";
 
@@ -23,6 +24,8 @@ module.exports = function(beaver, db) {
         Description: Reset the counts of each channel
      */
     function resetCounts(caller = undefined) {
+
+        // rAnime
         for (var channel in dbObj.mainChannels) {
             dbObj.mainChannels[channel].count = 0;
         }
@@ -40,6 +43,12 @@ module.exports = function(beaver, db) {
         if (caller != undefined) {
             beaver.createMessage(caller.channel.id, "Counts reset.");
         }
+
+
+        // rLL
+        for (var channel in dbLL) {
+            dbLL[channel].count = 0;
+        }
     }
 
     /*
@@ -50,40 +59,54 @@ module.exports = function(beaver, db) {
     function count(msg) {
         //console.log("["+msg.channel.name+"]:"+ msg.author.username);
 
-        // filtered channels
-        if (dbObj.channelFilter.indexOf(msg.channel.id) != -1)
-            return;
+        // rAnime count
+        if (msg.channel.guild.id === db.etc.rAnimeServerID) {
+            // filtered channels
+            if (dbObj.channelFilter.indexOf(msg.channel.id) != -1)
+                return;
 
-        // main channel message
-        if (msg.channel.id in dbObj.mainChannels) {
-            dbObj.mainChannels[msg.channel.id].count++;
-            dbObj.mainChannels[msg.channel.id].total++;
-            dbObj.totals.mainTotal.count++;
-            dbObj.totals.mainTotal.total++;
+            // main channel message
+            if (msg.channel.id in dbObj.mainChannels) {
+                dbObj.mainChannels[msg.channel.id].count++;
+                dbObj.mainChannels[msg.channel.id].total++;
+                dbObj.totals.mainTotal.count++;
+                dbObj.totals.mainTotal.total++;
+            }
+            // optin channel message
+            else if (msg.channel.id in dbObj.optinChannels) {
+                dbObj.optinChannels[msg.channel.id].count++;
+                dbObj.optinChannels[msg.channel.id].total++;
+                dbObj.totals.optinTotal.count++;
+                dbObj.totals.optinTotal.total++;
+            }
+            // temp channel message
+            else if (msg.channel.id in dbObj.otherChannels) {
+                dbObj.otherChannels[msg.channel.id].count++;
+                dbObj.otherChannels[msg.channel.id].total++;
+                dbObj.totals.tempTotal.count++;
+                dbObj.totals.tempTotal.total++;
+            }
+            else { // new temp channel not in db
+                dbObj.otherChannels[msg.channel.id] = {
+                    name: msg.channel.name,
+                    count: 1,
+                    total: 1
+                };
+                dbObj.totals.tempTotal.count++;
+                dbObj.totals.tempTotal.total++;
+            }
         }
-        // optin channel message
-        else if (msg.channel.id in dbObj.optinChannels) {
-            dbObj.optinChannels[msg.channel.id].count++;
-            dbObj.optinChannels[msg.channel.id].total++;
-            dbObj.totals.optinTotal.count++;
-            dbObj.totals.optinTotal.total++;
+
+
+        // rLL Count
+        else if (msg.channel.guild.id === db.etc.rLLServerID) {
+            // message is in list of counting channels
+            if (msg.channel.id in dbLL) {
+                dbLL[msg.channel.id].count++;
+                dbLL[msg.channel.id].total++;
+            }
         }
-        // temp channel message
-        else if (msg.channel.id in dbObj.otherChannels) {
-            dbObj.otherChannels[msg.channel.id].count++;
-            dbObj.otherChannels[msg.channel.id].total++;
-            dbObj.totals.tempTotal.count++;
-            dbObj.totals.tempTotal.total++;
-        }
-        else { // new temp channel not in db
-            dbObj.otherChannels[msg.channel.id] = {
-                name: msg.channel.name,
-                count: 1,
-                total: 1
-            };
-            dbObj.totals.tempTotal.count++;
-            dbObj.totals.tempTotal.total++;
-        }
+
     }
 
 
@@ -145,11 +168,32 @@ module.exports = function(beaver, db) {
         Usage: ~counts
         Description: Create an update message and send to channel
      */
-    function requestCounts(chanID, response = "") {
-        response += createUpdate();
-        beaver.createMessage(chanID, response);
+    function requestCounts(guild, channel, response = "") {
+        if (guild === db.etc.rAnimeServerID) {
+            response += createUpdate();
+        }
+        else if (guild === db.etc.rLLServerID) {
+            response += updateLL();
+        }
+        else {  // test channel, do both
+            response += createUpdate() + "\n";
+            response += updateLL();
+        }
+        beaver.createMessage(channel, response);
 
         return response;
+    }
+
+    function updateLL() {
+        var message = "```xl\n";
+
+        for (var channel in dbLL) {
+            message += dbLL[channel].name + ": " + dbLL[channel].count +
+                " | " + dbLL[channel].total + "\n";
+        }
+
+        message += "```";
+        return message;
     }
 
     /*
@@ -210,16 +254,22 @@ module.exports = function(beaver, db) {
     dailyUpdateRule.minute = 0;
     schedule.scheduleJob(dailyUpdateRule, function() {
         console.log("[" + moment().format() + "] Sending Daily Update");
-        var update = requestCounts(db.etc.botlogID,
-            ":calendar_spiral: **`DAILY UPDATE for "+ moment().subtract(1, 'days').format('MMMM D')
-            + "`** :calendar_spiral: ");    // send update
+        var dailyMsgHeader = ":calendar_spiral: **`DAILY UPDATE for "+ moment().subtract(1, 'days').format('MMMM D')
+            + "`** :calendar_spiral: "
 
+        // rAnime
+        var update = requestCounts(db.etc.rAnimeServerID, db.etc.botlogID, dailyMsgHeader);    // send update
+
+        // rLL
+        requestCounts(db.etc.rLLServerID, db.etc.msgCountChannel, dailyMsgHeader);
+
+        /*
         // archive update
         fs.appendFile(archiveFilePath, update, (err) => {
             if (err) throw err;
             console.log(getTimestamp() + " Update archived.");
         });
-
+        */
         resetCounts();
     });
 
