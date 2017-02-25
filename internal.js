@@ -29,6 +29,7 @@ module.exports = function(beaver, db, filePath) {
      */
     function saveDB() {
         jsonfile.writeFileSync(filePath, db, {spaces: 2});
+        beaver.createMessage(msg.channel.id, "`db saved`");
     }
 
     /*

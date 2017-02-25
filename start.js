@@ -106,7 +106,7 @@ beaver.on("messageCreate", (msg) => {
                 
         // internal commands
             else if (msg.content === "~savedb") {
-                internal.saveDB();
+                internal.saveDB(msg);
                 legitCommand = true;
             }
             else if (msg.content === "~loaddb") {
@@ -149,17 +149,18 @@ beaver.on("messageCreate", (msg) => {
          ADMIN/FOUNDER COMMANDS
          *********************/
         // COMMAND: Count update
-        if (msg.author.id === db.etc.eterID || isAdminFounder(msg.member.roles)) {
-            if (msg.content === "~counts" || msg.content === "~count") {
-                msgCounting.requestCounts(msg.channel.guild.id, msg.channel.id);
-                legitCommand = true;
-            }
-            /*else if (msg.content === "~order") {
+        /*if (msg.author.id === db.etc.eterID || isAdminFounder(msg.member.roles)) {
+
+            else if (msg.content === "~order") {
                 internal.order(msg);
                 legitCommand = true;
-            }*/
-        }
+            }
+        }*/
 
+        if (msg.content === "~counts" || msg.content === "~count") {
+            msgCounting.requestCounts(msg.channel.guild.id, msg.channel.id);
+            legitCommand = true;
+        }
 
         /*****************
          PUBLIC COMMANDS
