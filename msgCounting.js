@@ -179,6 +179,7 @@ module.exports = function(beaver, db) {
         else if (guild === "284969274240532481") {
             response = "```count : " + db.count + "```";
             beaver.createMessage(channel, response);
+            return;
         }
         else {  // test channel, do both
             response += createUpdate() + "\n";
