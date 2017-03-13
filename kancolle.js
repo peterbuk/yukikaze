@@ -18,8 +18,8 @@ module.exports = function(beaver, db) {
     function pvpTimer() {
         var pvpA = new schedule.RecurrenceRule();
         var pvpB = new schedule.RecurrenceRule();
-        pvpA.hour = 12; // JST 03:00 (alert at 02:00)
-        pvpB.hour = 0;  // JST 15:00 (alert at 14:00)
+        pvpA.hour = 13; // JST 03:00 (alert at 02:00)
+        pvpB.hour = 1;  // JST 15:00 (alert at 14:00)
         pvpA.minute = 0;
         pvpB.minute = 0;
 
